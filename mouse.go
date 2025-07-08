@@ -19,8 +19,6 @@ type MouseControllerInterface interface {
 	Close()
 	TestConnection() error
 	SetPollingRate(rate int) error
-	GetCurrentPollingRate() (int, error)
-	GetBatteryLevel() (int, error)
 }
 
 func parsePollingRate(s string) int {

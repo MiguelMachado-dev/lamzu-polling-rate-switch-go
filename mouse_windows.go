@@ -10,20 +10,19 @@ import (
 )
 
 var (
-	hidDLL            = syscall.NewLazyDLL("hid.dll")
-	setupapi          = syscall.NewLazyDLL("setupapi.dll")
-	kernel32          = syscall.NewLazyDLL("kernel32.dll")
-	hidD_GetHidGuid   = hidDLL.NewProc("HidD_GetHidGuid")
-	hidD_GetAttributes = hidDLL.NewProc("HidD_GetAttributes")
-	hidD_SetFeature   = hidDLL.NewProc("HidD_SetFeature")
-	setupDiGetClassDevs = setupapi.NewProc("SetupDiGetClassDevsW")
-	setupDiEnumDeviceInterfaces = setupapi.NewProc("SetupDiEnumDeviceInterfaces")
+	hidDLL                          = syscall.NewLazyDLL("hid.dll")
+	setupapi                        = syscall.NewLazyDLL("setupapi.dll")
+	kernel32                        = syscall.NewLazyDLL("kernel32.dll")
+	hidD_GetHidGuid                 = hidDLL.NewProc("HidD_GetHidGuid")
+	hidD_GetAttributes              = hidDLL.NewProc("HidD_GetAttributes")
+	hidD_SetFeature                 = hidDLL.NewProc("HidD_SetFeature")
+	setupDiGetClassDevs             = setupapi.NewProc("SetupDiGetClassDevsW")
+	setupDiEnumDeviceInterfaces     = setupapi.NewProc("SetupDiEnumDeviceInterfaces")
 	setupDiGetDeviceInterfaceDetail = setupapi.NewProc("SetupDiGetDeviceInterfaceDetailW")
-	setupDiDestroyDeviceInfoList = setupapi.NewProc("SetupDiDestroyDeviceInfoList")
-	createFile = kernel32.NewProc("CreateFileW")
-	closeHandle = kernel32.NewProc("CloseHandle")
-	writeFile = kernel32.NewProc("WriteFile")
-	readFile = kernel32.NewProc("ReadFile")
+	setupDiDestroyDeviceInfoList    = setupapi.NewProc("SetupDiDestroyDeviceInfoList")
+	createFile                      = kernel32.NewProc("CreateFileW")
+	closeHandle                     = kernel32.NewProc("CloseHandle")
+	writeFile                       = kernel32.NewProc("WriteFile")
 )
 
 const (
@@ -58,9 +57,9 @@ type SP_DEVICE_INTERFACE_DETAIL_DATA struct {
 }
 
 type HIDD_ATTRIBUTES struct {
-	Size         uint32
-	VendorID     uint16
-	ProductID    uint16
+	Size          uint32
+	VendorID      uint16
+	ProductID     uint16
 	VersionNumber uint16
 }
 
@@ -116,15 +115,15 @@ func (w *WindowsMouseController) SetPollingRate(rate int) error {
 
 	// Use exact format from working TypeScript implementation
 	command := make([]byte, REPORT_SIZE)
-	command[0] = 0x00        // Report ID
-	command[1] = 0x00        // Padding (default fill)
-	command[2] = 0x00        // Padding (default fill)
-	command[3] = 0x02        // Command type
-	command[4] = 0x02        // Sub-command
-	command[5] = 0x01        // Parameter
-	command[6] = 0x00        // Reserved
-	command[7] = 1           // Configuration
-	command[8] = rateValue   // Polling rate value
+	command[0] = 0x00      // Report ID
+	command[1] = 0x00      // Padding (default fill)
+	command[2] = 0x00      // Padding (default fill)
+	command[3] = 0x02      // Command type
+	command[4] = 0x02      // Sub-command
+	command[5] = 0x01      // Parameter
+	command[6] = 0x00      // Reserved
+	command[7] = 1         // Configuration
+	command[8] = rateValue // Polling rate value
 
 	if verbose {
 		fmt.Printf("🔧 Sending command: [%02X %02X %02X %02X %02X %02X %02X %02X %02X...]\n",
@@ -168,14 +167,6 @@ func (w *WindowsMouseController) SetPollingRate(rate int) error {
 	}
 
 	return nil
-}
-
-func (w *WindowsMouseController) GetCurrentPollingRate() (int, error) {
-	return 1000, nil
-}
-
-func (w *WindowsMouseController) GetBatteryLevel() (int, error) {
-	return 0, fmt.Errorf("battery level not available")
 }
 
 func (w *WindowsMouseController) GetDeviceInfo() (*HIDD_ATTRIBUTES, error) {
@@ -332,7 +323,7 @@ func extractInterfaceNumber(devicePath string) int {
 		return -1
 	}
 
-	interfaceStr := devicePath[start:start+2]
+	interfaceStr := devicePath[start : start+2]
 
 	// Convert hex string to int
 	if interfaceNum, err := strconv.ParseInt(interfaceStr, 16, 32); err == nil {

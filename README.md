@@ -1,135 +1,136 @@
 # LAMZU Polling Rate Auto-Switch (Go)
 
-Versão em Go do automator para mouse LAMZU que ajusta automaticamente o polling rate baseado nos jogos em execução.
+A Go-based automator for LAMZU mice that automatically adjusts polling rate based on running games.
 
-## Características
+## Features
 
-- ✅ Executável único (.exe) sem dependências
-- ✅ Baixo uso de recursos (Go nativo)
-- ✅ Sem GUI - CLI/Service apenas
-- ✅ Configuração via arquivo YAML
-- ✅ Suporte a serviço Windows
-- ✅ Protocolo HID nativo do LAMZU Maya X 8K
-- 🆕 **Windows HID API Nativa**: Implementação direta usando hid.dll e setupapi.dll
-- 🆕 **Melhor detecção de dispositivos**: Usa SetupDi APIs para máxima confiabilidade
+- ✅ Single executable (.exe) with no dependencies
+- ✅ Low resource usage (native Go)
+- ✅ No GUI - CLI/Service only
+- ✅ YAML configuration file
+- ✅ Windows service support
+- ✅ Native LAMZU Maya X 8K HID protocol
+- 🆕 **Native Windows HID API**: Direct implementation using hid.dll and setupapi.dll
+- 🆕 **Better device detection**: Uses SetupDi APIs for maximum reliability
 
-## Instalação
+## Installation
 
-1. Baixe o executável `lamzu-automator.exe`
-2. Execute `build.bat` para compilar do código fonte (opcional)
-3. Configure os jogos em `config.yaml`
-4. Execute como administrador
+1. Download the `lamzu-automator.exe` executable
+2. Run `build.bat` to compile from source (optional)
+3. Configure your games in `config.yaml`
+4. Run as administrator
 
-## Uso
+## Usage
 
-### Modo Interativo
+### Interactive Mode
 ```bash
-# Executar normalmente
+# Run normally
 lamzu-automator.exe
 
-# Executar com arquivo de configuração personalizado
-lamzu-automator.exe -c minha-config.yaml
+# Run with custom configuration file
+lamzu-automator.exe -c my-config.yaml
 
-# Executar com output verbose
+# Run with verbose output
 lamzu-automator.exe -v
 ```
 
-### Modo Daemon/Service
+### Daemon/Service Mode
 ```bash
-# Executar como daemon (background)
+# Run as daemon (background)
 lamzu-automator.exe -d
 
-# Instalar como serviço Windows
+# Install as Windows service
 install.bat
 
-# Remover serviço Windows
+# Remove Windows service
 uninstall.bat
 ```
 
-### Comandos Manuais
+### Manual Commands
 ```bash
-# Definir polling rate manualmente
+# Set polling rate manually
 lamzu-automator.exe set 2000
 
-# Listar polling rates disponíveis
+# List available polling rates
 lamzu-automator.exe list
 
-# Ajuda
+# Debug and test device connection
+lamzu-automator.exe debug
+
+# Help
 lamzu-automator.exe --help
 ```
 
-## Configuração
+## Configuration
 
-Edite o arquivo `config.yaml`:
+Edit the `config.yaml` file:
 
 ```yaml
-default_polling_rate: 1000  # Polling rate padrão (desktop)
-game_polling_rate: 2000     # Polling rate para jogos
-check_interval: 2s          # Intervalo de verificação
-games:                      # Lista de jogos (processos)
+default_polling_rate: 1000  # Default polling rate (desktop)
+game_polling_rate: 2000     # Polling rate for games
+check_interval: 2s          # Check interval
+games:                      # List of games (processes)
   - HuntGame.exe
   - DuneSandbox-Wi.exe
   - eldenring.exe
   - cs2.exe
   - valorant.exe
+  - ApexLegends.exe
 ```
 
-## Requisitos
+## Requirements
 
 - Windows 10/11
-- Mouse LAMZU Maya X 8K
-- Executar como Administrador (necessário para HID)
+- LAMZU Maya X 8K mouse
+- Run as Administrator (required for HID access)
 
-## Vantagens vs Versão Node.js
+## Advantages vs Node.js Version
 
-- **Tamanho**: ~5MB vs ~80MB (16x menor)
-- **Memória**: ~10MB vs ~50MB (5x menos)
-- **Startup**: Instantâneo vs ~2 segundos
-- **Dependências**: Zero vs Node.js + Electron
-- **Segurança**: Executável nativo vs JavaScript
+- **Size**: ~5MB vs ~80MB (16x smaller)
+- **Memory**: ~10MB vs ~50MB (5x less)
+- **Startup**: Instant vs ~2 seconds
+- **Dependencies**: Zero vs Node.js + Electron
+- **Security**: Native executable vs JavaScript
 
-## Compilação
+## Building
 
 ```bash
-# Instalar Go 1.21+
+# Install Go 1.21+
 go mod tidy
 go build -ldflags="-s -w" -o lamzu-automator.exe .
 ```
 
-## Implementação HID Nativa
+## Native HID Implementation
 
-O aplicativo utiliza APIs Windows nativas diretamente para máxima confiabilidade:
+The application uses Windows native APIs directly for maximum reliability:
 
-**Windows API Nativa**: Usa `hid.dll`, `setupapi.dll` diretamente
-- Descoberta de dispositivos mais confiável
-- Usa `HidD_GetHidGuid`, `SetupDiGetClassDevs`
-- Filtragem por interface (interface 2 para LAMZU)
-- Comandos via `HidD_SetFeature` para feature reports
-- Melhor integração com o sistema Windows
+**Native Windows API**: Uses `hid.dll`, `setupapi.dll` directly
+- More reliable device discovery
+- Uses `HidD_GetHidGuid`, `SetupDiGetClassDevs`
+- Filters by interface (interface 2 for LAMZU)
+- Commands via `HidD_SetFeature` for feature reports
+- Better Windows system integration
 
-Execute com `-v` para ver detalhes da descoberta de dispositivos:
+Run with `-v` to see device discovery details:
 ```bash
 lamzu-automator.exe debug -v
 ```
 
 ## Troubleshooting
 
-**Erro "device not found"**:
-- Execute como Administrador
-- Verifique se o mouse está conectado
-- Confirme que é um LAMZU Maya X 8K
-- Teste: `lamzu-automator.exe debug -v`
+**"device not found" error**:
+- Run as Administrator
+- Check if mouse is connected
+- Confirm it's a LAMZU Maya X 8K
+- Test: `lamzu-automator.exe debug -v`
 
-**Polling rate não muda**:
-- Reinicie o mouse (desconecte/reconecte)
-- Verifique se nenhum outro software está controlando o mouse
-- Confirme que o processo do jogo está na lista de configuração
+**Polling rate doesn't change**:
+- Restart the mouse (disconnect/reconnect)
+- Check if other software is controlling the mouse
+- Confirm the game process is in the configuration list
 
-**Debug avançado**:
+**Advanced debugging**:
 ```bash
-# Listar todos os dispositivos HID
-lamzu-automator.exe list-all -v
-
-# Debug completo com APIs nativas
+# Debug with verbose output
 lamzu-automator.exe debug -v
 ```

@@ -13,7 +13,6 @@ import (
 var (
 	configFile string
 	daemon     bool
-	setRate    int
 	verbose    bool
 )
 
@@ -43,23 +42,14 @@ var debugCmd = &cobra.Command{
 	Run:   runDebug,
 }
 
-var listAllCmd = &cobra.Command{
-	Use:   "list-all",
-	Short: "List all HID devices",
-	Run:   runListAll,
-}
-
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "config.yaml", "config file")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "verbose output")
 	rootCmd.Flags().BoolVarP(&daemon, "daemon", "d", false, "run as daemon")
 
-	setCmd.Flags().IntVarP(&setRate, "rate", "r", 1000, "polling rate (500, 1000, 2000, 4000, 8000)")
-
 	rootCmd.AddCommand(setCmd)
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(debugCmd)
-	rootCmd.AddCommand(listAllCmd)
 }
 
 func main() {
@@ -209,9 +199,4 @@ func runDaemon(watcher *GameWatcher) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	<-c
-}
-
-func runListAll(cmd *cobra.Command, args []string) {
-	fmt.Println("🔍 Device listing not available")
-	fmt.Println("Use 'debug' command instead for device testing")
 }
