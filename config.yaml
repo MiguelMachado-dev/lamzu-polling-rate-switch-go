@@ -1,0 +1,11 @@
+default_polling_rate: 1000
+game_polling_rate: 2000
+check_interval: 2s
+games:
+  - HuntGame.exe
+  - DuneSandbox-Wi.exe
+  - eldenring.exe
+  - cs2.exe
+  - valorant.exe
+  - ApexLegends.exe
+  - MarvelRivals.exe
