@@ -1,0 +1,1 @@
+.\lamzu-automator.exe

@@ -92,6 +92,9 @@ func runAutomator(cmd *cobra.Command, args []string) {
 	fmt.Println("🎮 LAMZU Polling Rate Auto-Switch v1.0")
 	fmt.Println("✅ Mouse connected successfully")
 
+	// Initialize notification manager
+	notificationManager := NewNotificationManager()
+
 	// Set initial polling rate
 	if err := mouse.SetPollingRate(config.DefaultPollingRate); err != nil {
 		log.Fatalf("Failed to set initial polling rate: %v", err)
@@ -101,7 +104,10 @@ func runAutomator(cmd *cobra.Command, args []string) {
 	fmt.Printf("🎯 Game polling rate: %dHz\n", config.GamePollingRate)
 	fmt.Printf("🔍 Monitoring %d games\n", len(config.Games))
 
-	watcher := NewGameWatcher(config, mouse)
+	// Show app started notification
+	notificationManager.ShowAppStarted()
+
+	watcher := NewGameWatcher(config, mouse, notificationManager)
 
 	if daemon {
 		fmt.Println("🚀 Starting in daemon mode...")

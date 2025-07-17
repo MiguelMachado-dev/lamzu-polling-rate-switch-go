@@ -4,8 +4,5 @@ check_interval: 2s
 games:
   - HuntGame.exe
   - DuneSandbox-Wi.exe
-  - eldenring.exe
-  - cs2.exe
-  - valorant.exe
-  - ApexLegends.exe
-  - MarvelRivals.exe
+  - r5apex_dx12.exe
+  - Marvel-Win64-Shipping.exe

@@ -10,18 +10,20 @@ import (
 )
 
 type GameWatcher struct {
-	config        *Config
-	mouse         MouseControllerInterface
-	isGameRunning bool
-	ticker        *time.Ticker
-	stopCh        chan struct{}
+	config               *Config
+	mouse                MouseControllerInterface
+	notificationManager  *NotificationManager
+	isGameRunning        bool
+	ticker               *time.Ticker
+	stopCh               chan struct{}
 }
 
-func NewGameWatcher(config *Config, mouse MouseControllerInterface) *GameWatcher {
+func NewGameWatcher(config *Config, mouse MouseControllerInterface, notificationManager *NotificationManager) *GameWatcher {
 	return &GameWatcher{
-		config: config,
-		mouse:  mouse,
-		stopCh: make(chan struct{}),
+		config:              config,
+		mouse:               mouse,
+		notificationManager: notificationManager,
+		stopCh:              make(chan struct{}),
 	}
 }
 
@@ -66,12 +68,20 @@ func (gw *GameWatcher) checkProcesses() {
 		gw.isGameRunning = true
 		if err := gw.mouse.SetPollingRate(gw.config.GamePollingRate); err != nil {
 			fmt.Printf("❌ Failed to set game polling rate: %v\n", err)
+			gw.notificationManager.ShowError("Erro", "Falha ao alterar polling rate para jogo")
+		} else {
+			// Show game detected notification
+			gw.notificationManager.ShowGameDetected(gw.config.GamePollingRate)
 		}
 	} else if !gameRunning && gw.isGameRunning {
 		fmt.Printf("🏠 No game detected. Switching to %dHz\n", gw.config.DefaultPollingRate)
 		gw.isGameRunning = false
 		if err := gw.mouse.SetPollingRate(gw.config.DefaultPollingRate); err != nil {
 			fmt.Printf("❌ Failed to set default polling rate: %v\n", err)
+			gw.notificationManager.ShowError("Erro", "Falha ao alterar polling rate padrão")
+		} else {
+			// Show game closed notification
+			gw.notificationManager.ShowGameClosed(gw.config.DefaultPollingRate)
 		}
 	}
 }
