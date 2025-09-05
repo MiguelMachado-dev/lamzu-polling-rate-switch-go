@@ -7,6 +7,7 @@ toolchain go1.24.4
 require (
 	github.com/go-toast/toast v0.0.0-20190211030409-01e6764cf0a4
 	github.com/spf13/cobra v1.8.0
+	golang.org/x/sys v0.35.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 

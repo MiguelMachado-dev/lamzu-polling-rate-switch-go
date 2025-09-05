@@ -120,10 +120,31 @@ func (gw *GameWatcher) isAnyGameRunning(processes []string) bool {
 		processSet[strings.ToLower(process)] = true
 	}
 
+	// Check legacy games list
 	for _, game := range gw.config.Games {
 		if processSet[strings.ToLower(game)] {
 			if verbose {
-				fmt.Printf("🎯 Detected game: %s\n", game)
+				fmt.Printf("🎯 Detected game (legacy): %s\n", game)
+			}
+			return true
+		}
+	}
+
+	// Check detected Steam games
+	for _, game := range gw.config.DetectedGames {
+		if processSet[strings.ToLower(game.Executable)] {
+			if verbose {
+				fmt.Printf("🎯 Detected game: %s (%s)\n", game.Name, game.Executable)
+			}
+			return true
+		}
+	}
+
+	// Check custom games
+	for _, game := range gw.config.CustomGames {
+		if processSet[strings.ToLower(game.Executable)] {
+			if verbose {
+				fmt.Printf("🎯 Detected custom game: %s (%s)\n", game.Name, game.Executable)
 			}
 			return true
 		}

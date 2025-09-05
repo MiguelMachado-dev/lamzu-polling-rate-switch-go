@@ -12,7 +12,36 @@ type Config struct {
 	DefaultPollingRate int           `yaml:"default_polling_rate"`
 	GamePollingRate    int           `yaml:"game_polling_rate"`
 	CheckInterval      time.Duration `yaml:"check_interval"`
-	Games              []string      `yaml:"games"`
+	Games              []string      `yaml:"games"` // Legacy support
+	Steam              *SteamConfig  `yaml:"steam,omitempty"`
+	DetectedGames      []Game        `yaml:"detected_games,omitempty"`
+	CustomGames        []CustomGame  `yaml:"custom_games,omitempty"`
+}
+
+type SteamConfig struct {
+	InstallPath string    `yaml:"install_path"`
+	Libraries   []Library `yaml:"libraries"`
+	LastScan    time.Time `yaml:"last_scan"`
+}
+
+type Library struct {
+	Path  string `yaml:"path"`
+	Label string `yaml:"label"`
+}
+
+type Game struct {
+	Name        string `yaml:"name"`
+	AppID       string `yaml:"app_id"`
+	Executable  string `yaml:"executable"`
+	InstallPath string `yaml:"install_path"`
+	Library     string `yaml:"library"`
+	SizeMB      int64  `yaml:"size_mb"`
+}
+
+type CustomGame struct {
+	Name       string `yaml:"name"`
+	Executable string `yaml:"executable"`
+	Path       string `yaml:"path"`
 }
 
 func LoadConfig(filename string) (*Config, error) {
@@ -21,13 +50,19 @@ func LoadConfig(filename string) (*Config, error) {
 		DefaultPollingRate: 1000,
 		GamePollingRate:    2000,
 		CheckInterval:      2 * time.Second,
-		Games: []string{
-			"HuntGame.exe",
-			"DuneSandbox-Wi.exe",
-			"eldenring.exe",
-			"cs2.exe",
-			"valorant.exe",
-			"ApexLegends.exe",
+		Steam: &SteamConfig{
+			InstallPath: "",
+			Libraries:   []Library{},
+			LastScan:    time.Time{},
+		},
+		DetectedGames: []Game{},
+		CustomGames: []CustomGame{
+			{Name: "Hunt: Showdown", Executable: "HuntGame.exe", Path: ""},
+			{Name: "Dune: Awakening", Executable: "DuneSandbox-Wi.exe", Path: ""},
+			{Name: "Elden Ring", Executable: "eldenring.exe", Path: ""},
+			{Name: "Counter-Strike 2", Executable: "cs2.exe", Path: ""},
+			{Name: "VALORANT", Executable: "valorant.exe", Path: ""},
+			{Name: "Apex Legends", Executable: "ApexLegends.exe", Path: ""},
 		},
 	}
 
