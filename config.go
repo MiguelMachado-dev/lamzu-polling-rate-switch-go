@@ -49,7 +49,7 @@ func LoadConfig(filename string) (*Config, error) {
 	config := &Config{
 		DefaultPollingRate: 1000,
 		GamePollingRate:    2000,
-		CheckInterval:      2 * time.Second,
+		CheckInterval:      5 * time.Second,
 		Steam: &SteamConfig{
 			InstallPath: "",
 			Libraries:   []Library{},

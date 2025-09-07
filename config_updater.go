@@ -185,7 +185,7 @@ func (cu *ConfigUpdater) saveConfigAtomic(config *Config) error {
 	}
 
 	tempPath := tempFile.Name()
-	
+
 	// Clean up temp file if something goes wrong
 	defer func() {
 		if tempFile != nil {

@@ -10,12 +10,13 @@ import (
 )
 
 type GameWatcher struct {
-	config               *Config
-	mouse                MouseControllerInterface
-	notificationManager  *NotificationManager
-	isGameRunning        bool
-	ticker               *time.Ticker
-	stopCh               chan struct{}
+	config              *Config
+	mouse               MouseControllerInterface
+	notificationManager *NotificationManager
+	isGameRunning       bool
+	ticker              *time.Ticker
+	stopCh              chan struct{}
+	processCache        []string
 }
 
 func NewGameWatcher(config *Config, mouse MouseControllerInterface, notificationManager *NotificationManager) *GameWatcher {
@@ -104,14 +105,15 @@ func (gw *GameWatcher) getRunningProcesses() ([]string, error) {
 		return nil, fmt.Errorf("failed to parse tasklist output: %w", err)
 	}
 
-	processes := make([]string, 0, len(records))
+	// Reuse existing slice to minimize allocations
+	gw.processCache = gw.processCache[:0]
 	for _, record := range records {
 		if len(record) > 0 {
-			processes = append(processes, record[0])
+			gw.processCache = append(gw.processCache, record[0])
 		}
 	}
 
-	return processes, nil
+	return gw.processCache, nil
 }
 
 func (gw *GameWatcher) isAnyGameRunning(processes []string) bool {

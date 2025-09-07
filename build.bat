@@ -11,7 +11,7 @@ if not exist "main.go" (
 )
 
 echo 📦 Downloading dependencies...
-"C:\Program Files\Go\bin\go.exe" mod tidy
+go mod tidy
 if %errorlevel% neq 0 (
     echo ❌ Failed to download dependencies
     pause
@@ -20,7 +20,7 @@ if %errorlevel% neq 0 (
 
 echo.
 echo 🏗️ Building LAMZU Automator (GUI mode - no console window)...
-"C:\Program Files\Go\bin\go.exe" build -ldflags="-s -w -H=windowsgui" -o lamzu-automator.exe .
+go build -ldflags="-s -w -H=windowsgui" -o lamzu-automator.exe .
 if %errorlevel% neq 0 (
     echo ❌ Build failed
     pause

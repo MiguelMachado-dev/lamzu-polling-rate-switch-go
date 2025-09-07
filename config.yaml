@@ -10,12 +10,6 @@ steam:
       label: Drive F
   last_scan: 2025-09-05T14:25:54.8095358-03:00
 detected_games:
-  - name: 9 Kings
-    app_id: "2784470"
-    executable: 9Kings.exe
-    install_path: c:\program files (x86)\steam\steamapps\common\9 Kings
-    library: Main
-    size_mb: 174
   - name: Abiotic Factor
     app_id: "427410"
     executable: AbioticFactor.exe
@@ -30,52 +24,16 @@ detected_games:
     size_mb: 17247
   - name: Battlefield™ 2042
     app_id: "1517290"
-    executable: BF2042Trial.exe
+    executable: BF2042.exe
     install_path: F:\SteamLibrary\steamapps\common\Battlefield 2042
     library: Drive F
     size_mb: 105020
-  - name: ELDEN RING NIGHTREIGN
-    app_id: "2622380"
-    executable: nightreign.exe
-    install_path: F:\SteamLibrary\steamapps\common\ELDEN RING NIGHTREIGN
-    library: Drive F
-    size_mb: 21187
-  - name: Hollow Knight
-    app_id: "367520"
-    executable: ""
-    install_path: F:\SteamLibrary\steamapps\common\Hollow Knight
-    library: Drive F
-    size_mb: 7603
   - name: "Hunt: Showdown 1896"
     app_id: "594650"
     executable: hunt.exe
     install_path: F:\SteamLibrary\steamapps\common\Hunt Showdown 1896
     library: Drive F
     size_mb: 78514
-  - name: Path of Exile 2
-    app_id: "2694490"
-    executable: PathOfExileSteam.exe
-    install_path: F:\SteamLibrary\steamapps\common\Path of Exile 2
-    library: Drive F
-    size_mb: 115374
-  - name: RimWorld
-    app_id: "294100"
-    executable: ""
-    install_path: F:\SteamLibrary\steamapps\common\RimWorld
-    library: Drive F
-    size_mb: 615
-  - name: Schedule I
-    app_id: "3164500"
-    executable: ""
-    install_path: F:\SteamLibrary\steamapps\common\Schedule I
-    library: Drive F
-    size_mb: 7322
-  - name: The King is Watching
-    app_id: "2753900"
-    executable: The King is Watching.exe
-    install_path: c:\program files (x86)\steam\steamapps\common\The King is Watching
-    library: Main
-    size_mb: 352
   - name: The Last of Us™ Part II Remastered
     app_id: "2531310"
     executable: launcher.exe

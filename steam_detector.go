@@ -64,7 +64,7 @@ func (sd *SteamDetector) FindSteamInstallation() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("Steam installation not found")
+	return "", fmt.Errorf("steam installation not found")
 }
 
 // getSteamPathFromRegistry retrieves Steam path from Windows registry
@@ -101,7 +101,7 @@ func (sd *SteamDetector) getSteamPathFromRegistry() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("Steam path not found in registry")
+	return "", fmt.Errorf("steam path not found in registry")
 }
 
 // validateSteamPath checks if the given path is a valid Steam installation
@@ -139,7 +139,6 @@ func (sd *SteamDetector) DiscoverLibraries(steamPath string) ([]Library, error) 
 	// Parse libraryfolders.vdf for additional libraries
 	libraryFoldersPath := filepath.Join(steamPath, "steamapps", "libraryfolders.vdf")
 
-
 	content, err := os.ReadFile(libraryFoldersPath)
 	if err != nil {
 		// If libraryfolders.vdf doesn't exist, just return main library
@@ -149,7 +148,6 @@ func (sd *SteamDetector) DiscoverLibraries(steamPath string) ([]Library, error) 
 		return libraries, nil
 	}
 
-
 	parser := NewVDFParser()
 	libraryData, err := parser.ParseLibraryFolders(content)
 	if err != nil {
@@ -158,7 +156,6 @@ func (sd *SteamDetector) DiscoverLibraries(steamPath string) ([]Library, error) 
 		}
 		return libraries, nil
 	}
-
 
 	// Process discovered libraries
 	for _, libInfo := range libraryData {
